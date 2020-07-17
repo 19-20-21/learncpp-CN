@@ -1,0 +1,23 @@
+dist: xenial
+language: python
+python: 3.7
+
+before_install:
+  - pip install mkdocs mkdocs-material
+
+before_script:
+  - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - git config --global user.email dashjay@aliyun.com
+  - git config --global user.name dashjay
+
+script:
+  - mkdocs build -c -d ./public
+
+after_success:
+  - DATE=$(date)
+  - cd public
+  - git init
+  - git remote add origin https://dashjay:${pass}@github.com/19-20-21/19-20-21.github.io
+  - git add .
+  - git commit -m "${DATE}"
+  - git push origin master -f
